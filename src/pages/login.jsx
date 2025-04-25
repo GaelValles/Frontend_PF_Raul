@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ReCAPTCHA from 'react-google-recaptcha';
-import logo from '../assets/logomural.jpeg';
+import logo from '../assets/muralazul.png';
 import * as yup from 'yup';
 import {
   Container,
@@ -24,7 +24,7 @@ const schema = yup.object().shape({
 const Login = () => {
   const [error, setError] = useState(null);
   const [recaptchaToken, setRecaptchaToken] = useState(null);
-  const [showPassword, setShowPassword] = useState(false); // Estado para mostrar/ocultar contraseña
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -53,26 +53,26 @@ const Login = () => {
   };
 
   const handleTogglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev); // Cambia el estado de mostrar/ocultar contraseña
+    setShowPassword((prev) => !prev);
   };
 
   return (
     <Box
       sx={{
-        backgroundImage: 'linear-gradient(to right, rgb(81, 150, 141),rgb(19, 74, 66))',
+        backgroundImage: 'linear-gradient(to right, #8c52ff, #4364f7)',
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontFamily: 'Arial, sans-serif',
+        fontFamily: "Poppins', sans-serif",
       }}
     >
       <Container
-        maxWidth="sm"
+        maxWidth="xs"
         sx={{
           backgroundColor: '#ffffff',
-          boxShadow: 3,
-          borderRadius: 2,
+          boxShadow: 6,
+          borderRadius: 4,
           p: 4,
           textAlign: 'center',
         }}
@@ -86,6 +86,8 @@ const Login = () => {
             height: 150,
             marginBottom: 2,
             borderRadius: '50%',
+            objectFit: 'cover',
+            boxShadow: 2,
           }}
         />
 
@@ -93,11 +95,7 @@ const Login = () => {
           variant="h4"
           component="h1"
           gutterBottom
-          sx={{
-            color: 'rgb(19, 74, 66))',
-            minHeight: '10vh',
-            fontWeight: 'bold',
-          }}
+          sx={{ fontWeight: '600', color: '#5271ff' }}
         >
           Iniciar Sesión
         </Typography>
@@ -108,11 +106,7 @@ const Login = () => {
           </Alert>
         )}
 
-        <Box
-          component="form"
-          onSubmit={handleSubmit(onSubmit)}
-          sx={{ mt: 1 }}
-        >
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             fullWidth
@@ -122,21 +116,19 @@ const Login = () => {
             error={!!errors.email}
             helperText={errors.email?.message}
           />
+
           <TextField
             margin="normal"
             fullWidth
             label="Contraseña"
-            type={showPassword ? 'text' : 'password'} // Cambia el tipo de input según el estado
+            type={showPassword ? 'text' : 'password'}
             {...register('password')}
             error={!!errors.password}
             helperText={errors.password?.message}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton
-                    onClick={handleTogglePasswordVisibility}
-                    edge="end"
-                  >
+                  <IconButton onClick={handleTogglePasswordVisibility} edge="end">
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
@@ -144,20 +136,13 @@ const Login = () => {
             }}
           />
 
-          {/* reCAPTCHA */}
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              mt: 2,
-              mb: 2,
-            }}
-          >
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
             <ReCAPTCHA
               sitekey="6LdnBR8rAAAAALjdAwk5F8VVeD0LKPCkuFAZCdaX"
               onChange={handleRecaptchaChange}
             />
           </Box>
+
           <Button
             type="submit"
             fullWidth
@@ -165,17 +150,23 @@ const Login = () => {
             sx={{
               mt: 3,
               mb: 2,
-              backgroundColor: '#27c1ad',
+              backgroundColor: '#8c52ff',
+              borderRadius: 3,
+              fontWeight: 'bold',
+              fontFamily: "Poppins', sans-serif",
+              transition: 'transform 0.2s ease',
               '&:hover': {
-                backgroundColor: '#2a8b7e',
+                backgroundColor: '#6926ed',
+                transform: 'scale(1.02)',
               },
             }}
           >
-            Iniciar Sesión
+            Iniciar sesión
           </Button>
+
           <Typography variant="body2">
             ¿No tienes una cuenta?{' '}
-            <RouterLink to="/register" style={{ color: '#1976d2' }}>
+            <RouterLink to="/register" style={{ color: '#1976d2', textDecoration: 'none' }}>
               Regístrate
             </RouterLink>
           </Typography>

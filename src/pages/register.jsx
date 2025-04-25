@@ -1,5 +1,4 @@
-import { useState } from 'react';
-
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import {
@@ -42,20 +41,20 @@ const Register = () => {
   return (
     <Box
       sx={{
-        backgroundImage: 'linear-gradient(to right, rgb(81, 150, 141),rgb(19, 74, 66))',
+        backgroundImage: 'linear-gradient(to right, #8c52ff, #4364f7)',
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontFamily: 'Arial, sans-serif',
+        fontFamily: "'Poppins', sans-serif",
       }}
     >
       <Container
-        maxWidth="sm"
+        maxWidth="xs"
         sx={{
           backgroundColor: '#ffffff',
-          boxShadow: 3,
-          borderRadius: 2,
+          boxShadow: 6,
+          borderRadius: 4,
           p: 4,
           textAlign: 'center',
         }}
@@ -64,10 +63,7 @@ const Register = () => {
           variant="h4"
           component="h1"
           gutterBottom
-          sx={{
-            color: '#00000',
-            fontWeight: 'bold',
-          }}
+          sx={{ fontWeight: '600', color: '#5271ff' }}
         >
           Registrarse
         </Typography>
@@ -78,11 +74,7 @@ const Register = () => {
           </Alert>
         )}
 
-        <Box
-          component="form"
-          onSubmit={handleSubmit(onSubmit)}
-          sx={{ mt: 1 }}
-        >
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             fullWidth
@@ -126,9 +118,14 @@ const Register = () => {
             sx={{
               mt: 3,
               mb: 2,
-              backgroundColor: '#27c1ad',
+              backgroundColor: '#8c52ff',
+              borderRadius: 3,
+              fontWeight: 'bold',
+              fontFamily: "'Poppins', sans-serif",
+              transition: 'transform 0.2s ease',
               '&:hover': {
-                backgroundColor: '#2a8b7e',
+                backgroundColor: '#6926ed',
+                transform: 'scale(1.02)',
               },
             }}
           >
@@ -136,7 +133,7 @@ const Register = () => {
           </Button>
           <Typography variant="body2">
             ¿Ya tienes una cuenta?{' '}
-            <RouterLink to="/login" style={{ color: '#1976d2' }}>
+            <RouterLink to="/login" style={{ color: '#1976d2', textDecoration: 'none' }}>
               Inicia sesión
             </RouterLink>
           </Typography>
