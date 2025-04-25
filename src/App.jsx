@@ -4,7 +4,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Register from './pages/register';
 import Login from './pages/login';
-
+import Home from './pages/Home';
 const theme = createTheme({
   palette: {
     primary: {
@@ -22,7 +22,7 @@ const App = () => {
       <CssBaseline />
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           
