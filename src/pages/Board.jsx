@@ -8,8 +8,15 @@ import {
   Paper,
   Grid,
   IconButton,
+  AppBar,
+  Toolbar,
+  Menu,
+  MenuItem,
 } from '@mui/material';
-import { Add, Save, UploadFile, Link as LinkIcon, ColorLens } from '@mui/icons-material';
+import { Add, Save, UploadFile, Link as LinkIcon, ColorLens, Delete } from '@mui/icons-material';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import { Link as RouterLink } from 'react-router-dom';
+import logo from '../assets/muralazul.png';
 
 const BoardCreation = () => {
   const [boardTitle, setBoardTitle] = useState('Haz clic para editar el título del tablero');
@@ -18,6 +25,7 @@ const BoardCreation = () => {
   const [backgroundImage, setBackgroundImage] = useState(
     'https://images.pexels.com/photos/30612393/pexels-photo-30612393.jpeg'
   );
+  const [anchorEl, setAnchorEl] = useState(null);
 
   // Lista de fondos predefinidos
   const backgroundOptions = [
@@ -44,6 +52,11 @@ const BoardCreation = () => {
       filePreview: null,
     };
     setSections((prevSections) => [...prevSections, newSection]);
+  };
+
+  const handleDeleteSection = (id) => {
+    const updatedSections = sections.filter((section) => section.id !== id);
+    setSections(updatedSections);
   };
 
   const handleSectionChange = (id, field, value) => {
@@ -73,6 +86,9 @@ const BoardCreation = () => {
     }
   };
 
+  const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
+  const handleMenuClose = () => setAnchorEl(null);
+
   return (
     <Box
       sx={{
@@ -80,11 +96,87 @@ const BoardCreation = () => {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        p: 4,
         fontFamily: "'Poppins', sans-serif",
       }}
     >
-      <Container maxWidth="lg">
+      {/* Navbar */}
+      <AppBar position="sticky" elevation={1} sx={{ backgroundColor: '#ffffff' }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box
+              component="img"
+              src={logo}
+              alt="Logo"
+              sx={{
+                width: 45,
+                height: 45,
+                marginRight: 2,
+                borderRadius: '50%',
+                objectFit: 'cover',
+              }}
+            />
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 600,
+                color: '#5271ff',
+                fontSize: '1.2rem',
+              }}
+            >
+              Mural App
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Button
+              component={RouterLink}
+              to="/"
+              sx={{
+                color: '#5271ff',
+                textTransform: 'capitalize',
+                fontWeight: 'bold',
+                fontSize: '1rem',
+              }}
+            >
+              Inicio
+            </Button>
+            <Button
+              component={RouterLink}
+              to="/contact"
+              sx={{
+                color: '#5271ff',
+                textTransform: 'capitalize',
+                fontWeight: 'bold',
+                fontSize: '1rem',
+              }}
+            >
+              Contacto
+            </Button>
+            <IconButton
+              edge="end"
+              color="inherit"
+              onClick={handleMenuOpen}
+              sx={{ color: '#5271ff' }}
+            >
+              <AccountCircle fontSize="large" />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem component={RouterLink} to="/profile" onClick={handleMenuClose}>
+                Mi perfil
+              </MenuItem>
+              <MenuItem onClick={handleMenuClose}>Cerrar sesión</MenuItem>
+            </Menu>
+          </Box>
+        </Toolbar>
+      </AppBar>
+
+      {/* Main Content */}
+      <Container maxWidth="lg" sx={{ mt: 4 }}>
         {/* Título editable con ícono de guardado */}
         <Paper
           elevation={3}
@@ -201,13 +293,21 @@ const BoardCreation = () => {
                   justifyContent: 'space-between',
                 }}
               >
-                <TextField
-                  fullWidth
-                  label="Título de la sección"
-                  value={section.title}
-                  onChange={(e) => handleSectionChange(section.id, 'title', e.target.value)}
-                  sx={{ mb: 2 }}
-                />
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <TextField
+                    fullWidth
+                    label="Título de la sección"
+                    value={section.title}
+                    onChange={(e) => handleSectionChange(section.id, 'title', e.target.value)}
+                    sx={{ mb: 2 }}
+                  />
+                  <IconButton
+                    onClick={() => handleDeleteSection(section.id)}
+                    sx={{ color: '#ff5252' }}
+                  >
+                    <Delete />
+                  </IconButton>
+                </Box>
                 <TextField
                   fullWidth
                   label="Descripción de la sección"
