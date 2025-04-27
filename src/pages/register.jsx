@@ -12,13 +12,9 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 
 const schema = yup.object().shape({
-  name: yup.string().required('Nombre es requerido'),
-  email: yup.string().email('Email inválido').required('Email es requerido'),
-  password: yup.string().min(6, 'Mínimo 6 caracteres').required('Contraseña es requerida'),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref('password'), null], 'Las contraseñas no coinciden')
-    .required('Confirme su contraseña'),
+  nombreUsuario: yup.string().required('El nombre de usuario es requerido'),
+  correo: yup.string().email('Correo inválido').required('El correo es requerido'),
+  password: yup.string().min(6, 'La contraseña debe tener al menos 6 caracteres').required('La contraseña es requerida'),
 });
 
 const Register = () => {
@@ -28,11 +24,27 @@ const Register = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: async (data) => {
+      try {
+        await schema.validate(data, { abortEarly: false });
+        return { values: data, errors: {} };
+      } catch (validationErrors) {
+        return {
+          values: {},
+          errors: validationErrors.inner.reduce((allErrors, currentError) => {
+            allErrors[currentError.path] = { message: currentError.message };
+            return allErrors;
+          }, {}),
+        };
+      }
+    },
+  });
 
   const onSubmit = async (data) => {
     try {
       console.log('Datos enviados:', data);
+      // Aquí puedes realizar la lógica para enviar los datos al backend
     } catch (err) {
       setError('Error al registrar');
     }
@@ -78,20 +90,20 @@ const Register = () => {
           <TextField
             margin="normal"
             fullWidth
-            label="Nombre"
+            label="Nombre de Usuario"
             autoFocus
-            {...register('name')}
-            error={!!errors.name}
-            helperText={errors.name?.message}
+            {...register('nombreUsuario')}
+            error={!!errors.nombreUsuario}
+            helperText={errors.nombreUsuario?.message}
           />
           <TextField
             margin="normal"
             fullWidth
-            label="Email"
+            label="Correo"
             type="email"
-            {...register('email')}
-            error={!!errors.email}
-            helperText={errors.email?.message}
+            {...register('correo')}
+            error={!!errors.correo}
+            helperText={errors.correo?.message}
           />
           <TextField
             margin="normal"
@@ -101,15 +113,6 @@ const Register = () => {
             {...register('password')}
             error={!!errors.password}
             helperText={errors.password?.message}
-          />
-          <TextField
-            margin="normal"
-            fullWidth
-            label="Confirmar Contraseña"
-            type="password"
-            {...register('confirmPassword')}
-            error={!!errors.confirmPassword}
-            helperText={errors.confirmPassword?.message}
           />
           <Button
             type="submit"

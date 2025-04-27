@@ -6,6 +6,7 @@ import Register from './pages/register';
 import Login from './pages/login';
 import Home from './pages/Home';
 import Board from './pages/Board';
+import Profile from './pages/Profile';
 
 const theme = createTheme({
   palette: {
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path='/board' element={<Board />} />
+          <Route path="/profile" element={<Profile/>} />
           
           {/* Puedes agregar más rutas aquí según sea necesario */}
         </Routes>

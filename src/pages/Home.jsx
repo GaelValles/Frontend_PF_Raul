@@ -42,80 +42,80 @@ const Home = () => {
       }}
     >
       {/* Navbar */}
-      <AppBar position="static" elevation={1} sx={{ backgroundColor: '#ffffff' }}>
-        <Toolbar sx={{ fontFamily: "'Poppins', sans-serif" }}>
-          <Box
-            component="img"
-            src={logo}
-            alt="Logo"
-            sx={{
-              width: 45,
-              height: 45,
-              marginRight: 2,
-              borderRadius: '50%',
-              objectFit: 'cover',
-            }}
-          />
-          <Typography
-            variant="h6"
-            sx={{
-              flexGrow: 1,
-              fontWeight: 600,
-              color: '#5271ff',
-              fontSize: '1.2rem',
-            }}
-          >
-            Mural App
-          </Typography>
+      <AppBar position="sticky" elevation={1} sx={{ backgroundColor: '#ffffff' }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box
+              component="img"
+              src={logo}
+              alt="Logo"
+              sx={{
+                width: 45,
+                height: 45,
+                marginRight: 2,
+                borderRadius: '50%',
+                objectFit: 'cover',
+              }}
+            />
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 600,
+                color: '#5271ff',
+                fontSize: '1.2rem',
+              }}
+            >
+              Mural App
+            </Typography>
+          </Box>
 
-          <Button
-            component={RouterLink}
-            to="/"
-            sx={{
-              color: '#5271ff',
-              textTransform: 'capitalize',
-              fontWeight: 'bold',
-              fontSize: '1rem',
-            }}
-          >
-            Inicio
-          </Button>
-          <Button
-            component={RouterLink}
-            to="/contact"
-            sx={{
-              color: '#5271ff',
-              textTransform: 'capitalize',
-              fontWeight: 'bold',
-              fontSize: '1rem',
-            }}
-          >
-            Contacto
-          </Button>
-
-          {/* Ícono de perfil con menú desplegable */}
-          <IconButton
-            edge="end"
-            color="inherit"
-            onClick={handleMenuOpen}
-            sx={{ color: '#5271ff', ml: 1 }}
-          >
-            <AccountCircle fontSize="large" />
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem component={RouterLink} to="/profile" onClick={handleMenuClose}>
-              Mi perfil
-            </MenuItem>
-            <MenuItem onClick={handleMenuClose}>Cerrar sesión</MenuItem>
-          </Menu>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Button
+              component={RouterLink}
+              to="/"
+              sx={{
+                color: '#5271ff',
+                textTransform: 'capitalize',
+                fontWeight: 'bold',
+                fontSize: '1rem',
+              }}
+            >
+              Inicio
+            </Button>
+            <Button
+              component={RouterLink}
+              to="/contact"
+              sx={{
+                color: '#5271ff',
+                textTransform: 'capitalize',
+                fontWeight: 'bold',
+                fontSize: '1rem',
+              }}
+            >
+              Contacto
+            </Button>
+            <IconButton
+              edge="end"
+              color="inherit"
+              onClick={handleMenuOpen}
+              sx={{ color: '#5271ff' }}
+            >
+              <AccountCircle fontSize="large" />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem component={RouterLink} to="/profile" onClick={handleMenuClose}>
+                Mi perfil
+              </MenuItem>
+              <MenuItem onClick={handleMenuClose}>Cerrar sesión</MenuItem>
+            </Menu>
+          </Box>
         </Toolbar>
       </AppBar>
-
       {/* Main Content */}
       <Box
         sx={{
