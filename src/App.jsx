@@ -5,6 +5,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Register from './pages/register';
 import Login from './pages/login';
 import Home from './pages/Home';
+import Board from './pages/Board';
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -25,6 +27,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path='/board' element={<Board />} />
           
           {/* Puedes agregar más rutas aquí según sea necesario */}
         </Routes>
