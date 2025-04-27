@@ -18,7 +18,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import logo from '../assets/muralazul.png';
+import logo from '../assets/Muralazul.png';
 
 const Home = () => {
   const images = [

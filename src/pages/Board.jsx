@@ -16,7 +16,7 @@ import {
 import { Add, Save, UploadFile, Link as LinkIcon, ColorLens, Delete } from '@mui/icons-material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Link as RouterLink } from 'react-router-dom';
-import logo from '../assets/muralazul.png';
+import logo from '../assets/Muralazul.png';
 
 const BoardCreation = () => {
     const [boardTitle, setBoardTitle] = useState('Haz clic para editar el título del tablero');

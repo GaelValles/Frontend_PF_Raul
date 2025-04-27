@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ReCAPTCHA from 'react-google-recaptcha';
-import logo from '../assets/muralazul.png';
+import logo from '../assets/Muralazul.png';
 import * as yup from 'yup';
 import {
   Container,

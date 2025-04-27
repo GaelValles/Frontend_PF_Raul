@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { Save, Edit, AccountCircle } from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router-dom';
-import logo from '../assets/muralazul.png';
+import logo from '../assets/Muralazul.png';
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
