@@ -1,4 +1,5 @@
 import React from 'react';
+import { AuthProvider } from './context/UserContext';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -23,17 +24,19 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path='/board' element={<Board />} />
-          <Route path="/profile" element={<Profile/>} />
-          
-          {/* Puedes agregar más rutas aquí según sea necesario */}
-        </Routes>
-      </Router>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path='/board' element={<Board />} />
+            <Route path="/profile" element={<Profile/>} />
+            
+            {/* Puedes agregar más rutas aquí según sea necesario */}
+          </Routes>
+        </Router>
+      </AuthProvider>
     </ThemeProvider>
   );
 };

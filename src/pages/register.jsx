@@ -1,52 +1,41 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+import Swal from 'sweetalert2';
+import { useAuth } from '../context/UserContext';
 import {
   Container,
   Typography,
   TextField,
   Button,
   Box,
-  Alert,
 } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
-
-const schema = yup.object().shape({
-  nombreUsuario: yup.string().required('El nombre de usuario es requerido'),
-  correo: yup.string().email('Correo inválido').required('El correo es requerido'),
-  password: yup.string().min(6, 'La contraseña debe tener al menos 6 caracteres').required('La contraseña es requerida'),
-});
 
 const Register = () => {
-  const [error, setError] = useState(null);
+  const { register, handleSubmit, reset } = useForm();
+  const { registerUser } = useAuth();
+  const navigate = useNavigate();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: async (data) => {
-      try {
-        await schema.validate(data, { abortEarly: false });
-        return { values: data, errors: {} };
-      } catch (validationErrors) {
-        return {
-          values: {},
-          errors: validationErrors.inner.reduce((allErrors, currentError) => {
-            allErrors[currentError.path] = { message: currentError.message };
-            return allErrors;
-          }, {}),
-        };
-      }
-    },
-  });
-
-  const onSubmit = async (data) => {
+  const onSubmit = async (value) => {
     try {
-      console.log('Datos enviados:', data);
-      // Aquí puedes realizar la lógica para enviar los datos al backend
-    } catch (err) {
-      setError('Error al registrar');
+      const success = await registerUser(value);
+      if (success) {
+        Swal.fire({
+          title: 'Registro exitoso',
+          text: 'El usuario se ha registrado correctamente.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+        reset();
+        navigate('/login');
+      }
+    } catch{
+      Swal.fire({
+        title: 'Error',
+        text: 'Hubo un error al registrar el usuario. Inténtalo de nuevo.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
     }
   };
 
@@ -80,39 +69,27 @@ const Register = () => {
           Registrarse
         </Typography>
 
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
-
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             fullWidth
             label="Nombre de Usuario"
             autoFocus
-            {...register('nombreUsuario')}
-            error={!!errors.nombreUsuario}
-            helperText={errors.nombreUsuario?.message}
+            {...register('nombreUsuario', { required: true })}
           />
           <TextField
             margin="normal"
             fullWidth
             label="Correo"
             type="email"
-            {...register('correo')}
-            error={!!errors.correo}
-            helperText={errors.correo?.message}
+            {...register('correo', { required: true })}
           />
           <TextField
             margin="normal"
             fullWidth
             label="Contraseña"
             type="password"
-            {...register('password')}
-            error={!!errors.password}
-            helperText={errors.password?.message}
+            {...register('password', { required: true })}
           />
           <Button
             type="submit"
