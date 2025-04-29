@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await loginRequest(user);
       setUser(res.data);
+      console.log(res.data);
       setIsAuthenticated(true);
       return true;
     } catch (error) {

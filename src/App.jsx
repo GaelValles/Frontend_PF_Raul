@@ -8,7 +8,9 @@ import Login from './pages/login';
 import Home from './pages/Home';
 import Board from './pages/Board';
 import Profile from './pages/Profile';
-
+import Murales from './pages/murales';
+import SubirPublicacion from './pages/subirPublicacion';
+import Mural from './pages/Mural';
 const theme = createTheme({
   palette: {
     primary: {
@@ -31,7 +33,10 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path='/board' element={<Board />} />
+            <Route path="/murales" element={<Murales/>} />
+            <Route path="/mural/:id" element={<Mural/>} />
             <Route path="/profile" element={<Profile/>} />
+            <Route path="/subirPublicacion/:id" element={<SubirPublicacion />} />
             
             {/* Puedes agregar más rutas aquí según sea necesario */}
           </Routes>

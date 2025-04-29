@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ReCAPTCHA from 'react-google-recaptcha';
 import logo from '../assets/Muralazul.png';
-import * as yup from 'yup';
+import { useAuth } from '../context/UserContext';
+import Swal from 'sweetalert2';
 import {
   Container,
   Typography,
@@ -16,16 +17,11 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
-const schema = yup.object().shape({
-  email: yup.string().email('Email inválido').required('Email es requerido'),
-  password: yup.string().required('Contraseña es requerida'),
-});
-
 const Login = () => {
-  const [error, setError] = useState(null);
   const [recaptchaToken, setRecaptchaToken] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { login, errors: loginErrors } = useAuth();
 
   const {
     register,
@@ -35,16 +31,36 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     if (!recaptchaToken) {
-      setError('Por favor, verifica el reCAPTCHA.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Por favor, verifica el reCAPTCHA antes de continuar.',
+      });
       return;
     }
 
     try {
-      console.log('Datos enviados:', data);
-      console.log('reCAPTCHA Token:', recaptchaToken);
-      navigate('/dashboard');
-    } catch (err) {
-      setError('Error al iniciar sesión');
+      const success = await login(data);
+      if (success) {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Bienvenido!',
+          text: 'Has iniciado sesión correctamente',
+          customClass: {
+            container: 'font-sans'
+          }
+        });
+        navigate('/murales');
+      }
+    } catch {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de acceso',
+        text: 'Credenciales incorrectas. Por favor, intente nuevamente.',
+        customClass: {
+          container: 'font-sans'
+        }
+      });
     }
   };
 
@@ -64,7 +80,7 @@ const Login = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontFamily: "Poppins', sans-serif",
+        fontFamily: "'Poppins', sans-serif",
       }}
     >
       <Container
@@ -100,9 +116,9 @@ const Login = () => {
           Iniciar Sesión
         </Typography>
 
-        {error && (
+        {loginErrors.length > 0 && (
           <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
+            {loginErrors[0]}
           </Alert>
         )}
 
@@ -112,9 +128,9 @@ const Login = () => {
             fullWidth
             label="Email"
             type="email"
-            {...register('email')}
-            error={!!errors.email}
-            helperText={errors.email?.message}
+            {...register('correo', { required: 'Email es requerido' })}
+            error={!!errors.correo}
+            helperText={errors.correo?.message}
           />
 
           <TextField
@@ -122,7 +138,7 @@ const Login = () => {
             fullWidth
             label="Contraseña"
             type={showPassword ? 'text' : 'password'}
-            {...register('password')}
+            {...register('password', { required: 'Contraseña es requerida' })}
             error={!!errors.password}
             helperText={errors.password?.message}
             InputProps={{
@@ -153,7 +169,7 @@ const Login = () => {
               backgroundColor: '#8c52ff',
               borderRadius: 3,
               fontWeight: 'bold',
-              fontFamily: "Poppins', sans-serif",
+              fontFamily: "'Poppins', sans-serif",
               transition: 'transform 0.2s ease',
               '&:hover': {
                 backgroundColor: '#6926ed',
