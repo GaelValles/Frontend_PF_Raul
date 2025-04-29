@@ -7,6 +7,7 @@ import {
 } from "../api/auth.js";
 import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 export const UserContext = createContext();
 
@@ -16,6 +17,12 @@ export const useAuth = () => {
     throw new Error("useAuth debe usarse dentro de AuthProvider");
   }
   return context;
+};
+
+export const updateUserRequest = async (userData) => {
+  return await axios.put('http://localhost:4000/profile', userData, {
+    withCredentials: true
+  });
 };
 
 export const AuthProvider = ({ children }) => {
@@ -40,7 +47,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await loginRequest(user);
       setUser(res.data);
-      console.log(res.data);
+      console.log("los datos recogidos del login son: ",res.data);
+      console.log("el dato del user es: ",user);
       setIsAuthenticated(true);
       return true;
     } catch (error) {
@@ -57,6 +65,17 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
+    }
+  };
+
+  const updateUser = async (userData) => {
+    try {
+      const res = await updateUserRequest(userData);
+      setUser(res.data);
+      return res.data;
+    } catch (error) {
+      console.error("Error updating user:", error);
+      throw error;
     }
   };
 
@@ -99,6 +118,7 @@ export const AuthProvider = ({ children }) => {
       registerUser,
       login,
       logout,
+      updateUser,
       setUser,
       setErrors
     }}>

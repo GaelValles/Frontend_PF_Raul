@@ -37,12 +37,13 @@ import logo from '../assets/Muralazul.png';
 
 const Murales = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [myMurales, setMyMurales] = useState([]);
   const [participantMurales, setParticipantMurales] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [codigo, setCodigo] = useState('');
+  const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
     loadAllMurales();
@@ -124,6 +125,28 @@ const Murales = () => {
     navigate(`/mural/${muralId}`);
   };
 
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+
+  const handleProfile = () => {
+    navigate('/profile');
+    handleMenuClose();
+  };
+
   return (
     <Box sx={{ 
       minHeight: '100vh',
@@ -194,7 +217,7 @@ const Murales = () => {
           </Box>
           <Box sx={{ flexGrow: 1 }} />
           <IconButton
-            
+            onClick={handleMenuOpen}
             sx={{
               border: '2px solid rgba(255,255,255,0.8)',
               padding: '8px',
@@ -212,6 +235,29 @@ const Murales = () => {
               {user?.nombreUsuario?.charAt(0).toUpperCase()}
             </Avatar>
           </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+            PaperProps={{
+              sx: {
+                borderRadius: '12px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                mt: 1.5,
+                '& .MuiMenuItem-root': {
+                  fontFamily: "'Poppins', sans-serif",
+                  fontWeight: 500,
+                  color: '#6366f1',
+                  '&:hover': {
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                  }
+                }
+              }
+            }}
+          >
+            <MenuItem onClick={handleProfile}>Perfil</MenuItem>
+            <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
 
